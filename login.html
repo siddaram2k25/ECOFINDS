@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EcoFinds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .login-options {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+        .login-option {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        .login-option.active {
+            border-bottom-color: var(--primary);
+            font-weight: bold;
+        }
+        .login-form {
+            display: none;
+        }
+        .login-form.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>EcoFinds</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="form-container">
+                <h2 class="form-title">Login to Your Account</h2>
+                
+                <div class="login-options">
+                    <div class="login-option active" data-option="email">Email Login</div>
+                    <div class="login-option" data-option="mobile">Mobile Login</div>
+                </div>
+                
+                <form id="emailLoginForm" class="login-form active">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-block">Login with Email</button>
+                </form>
+                
+                <form id="mobileLoginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" id="mobile" class="form-control" placeholder="Enter your mobile number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobilePassword">Password</label>
+                        <input type="password" id="mobilePassword" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-block">Login with Mobile</button>
+                </form>
+                
+                <p class="text-center mt-1">
+                    Don't have an account? <a href="register.html">Register here</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EcoFinds</h3>
+                    <p>Empowering Sustainable Consumption through a Second-Hand Marketplace</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Email: info@ecofinds.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 EcoFinds. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Login options toggle
+        document.querySelectorAll('.login-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.login-option').forEach(opt => opt.classList.remove('active'));
+                document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(this.getAttribute('data-option') + 'LoginForm').classList.add('active');
+            });
+        });
+        
+        // Email login form handling
+        document.getElementById('emailLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Find user with matching credentials
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Set current user in localStorage
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Redirect to home page
+                window.location.href = 'index.html';
+            } else {
+                alert('Invalid email or password. Please try again.');
+            }
+        });
+        
+        // Mobile login form handling
+        document.getElementById('mobileLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const mobile = document.getElementById('mobile').value;
+            const password = document.getElementById('mobilePassword').value;
+            
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Find user with matching credentials
+            const user = users.find(u => u.mobile === mobile && u.password === password);
+            
+            if (user) {
+                // Set current user in localStorage
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Redirect to home page
+                window.location.href = 'index.html';
+            } else {
+                alert('Invalid mobile number or password. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
