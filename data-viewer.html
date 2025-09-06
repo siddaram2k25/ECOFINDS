@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalStorage Data Viewer - EcoFinds</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2E8B57;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .data-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .data-section h2 {
+            color: #2E8B57;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        pre {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #2E8B57;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .actions {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>EcoFinds LocalStorage Data Viewer</h1>
+    
+    <div class="actions">
+        <button class="btn" onclick="refreshData()">Refresh Data</button>
+        <button class="btn btn-danger" onclick="clearAllData()">Clear All Data</button>
+        <button class="btn btn-danger" onclick="clearSpecificData()">Clear Specific Data</button>
+    </div>
+    
+    <div class="data-section">
+        <h2>Users Data</h2>
+        <pre id="users-data">No data found</pre>
+    </div>
+    
+    <div class="data-section">
+        <h2>Current User</h2>
+        <pre id="current-user">No data found</pre>
+    </div>
+    
+    <div class="data-section">
+        <h2>Products Data</h2>
+        <pre id="products-data">No data found</pre>
+    </div>
+    
+    <div class="data-section">
+        <h2>Cart Data</h2>
+        <pre id="cart-data">No data found</pre>
+    </div>
+    
+    <div class="data-section">
+        <h2>Orders Data</h2>
+        <pre id="orders-data">No data found</pre>
+    </div>
+
+    <script>
+        // Display all localStorage data
+        function refreshData() {
+            document.getElementById('users-data').textContent = 
+                localStorage.getItem('users') || 'No data found';
+                
+            document.getElementById('current-user').textContent = 
+                localStorage.getItem('currentUser') || 'No data found';
+                
+            document.getElementById('products-data').textContent = 
+                localStorage.getItem('products') || 'No data found';
+                
+            document.getElementById('cart-data').textContent = 
+                localStorage.getItem('cart') || 'No data found';
+                
+            document.getElementById('orders-data').textContent = 
+                localStorage.getItem('orders') || 'No data found';
+        }
+        
+        // Clear all EcoFinds data
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear ALL EcoFinds data? This cannot be undone.')) {
+                localStorage.removeItem('users');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('products');
+                localStorage.removeItem('cart');
+                localStorage.removeItem('orders');
+                refreshData();
+                alert('All data cleared!');
+            }
+        }
+        
+        // Clear specific data
+        function clearSpecificData() {
+            const key = prompt('Enter the data key to clear (users, currentUser, products, cart, orders):');
+            if (key && ['users', 'currentUser', 'products', 'cart', 'orders'].includes(key)) {
+                localStorage.removeItem(key);
+                refreshData();
+                alert(`${key} data cleared!`);
+            } else {
+                alert('Invalid key entered.');
+            }
+        }
+        
+        // Load data on page load
+        refreshData();
+    </script>
+</body>
+</html>
