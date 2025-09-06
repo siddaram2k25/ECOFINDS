@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - EcoFinds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .image-upload {
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .image-upload:hover {
+            border-color: #2E8B57;
+        }
+        
+        .image-upload i {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+        
+        .image-preview {
+            display: none;
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 1rem;
+            border-radius: 5px;
+        }
+        
+        #fileName {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>EcoFinds</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="my-listings.html">My Listings</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="my-orders.html">My orders</a></li>
+
+                        <li><a href="dashboard.html">Profile</a></li>
+                        <li><a href="login.html" id="logoutBtn">Logout</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Add New Product</h1>
+            
+            <div class="form-container">
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label for="title">Product Title</label>
+                        <input type="text" id="title" class="form-control" placeholder="Enter product title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" class="form-control" required>
+                            <option value="">Select a category</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="furniture">Furniture</option>
+                            <option value="home">Home</option>
+                            <option value="sports">Sports</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" class="form-control" rows="4" placeholder="Describe your product" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price ($)</label>
+                        <input type="number" id="price" class="form-control" placeholder="Enter price" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Product Image</label>
+                        <div class="image-upload" id="imageUpload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload or drag and drop</p>
+                            <p>PNG, JPG up to 5MB</p>
+                            <input type="file" id="image" accept="image/*" style="display: none;">
+                        </div>
+                        <img id="imagePreview" class="image-preview" alt="Image preview">
+                        <div id="fileName"></div>
+                    </div>
+                    <button type="submit" class="btn btn-block">Submit Listing</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EcoFinds</h3>
+                    <p>Empowering Sustainable Consumption through a Second-Hand Marketplace</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="my-listings.html">My Listings</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="dashboard.html">Profile</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Email: info@ecofinds.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 EcoFinds. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+        
+        // Image upload functionality
+        const imageUpload = document.getElementById('imageUpload');
+        const imageInput = document.getElementById('image');
+        const imagePreview = document.getElementById('imagePreview');
+        const fileName = document.getElementById('fileName');
+        
+        imageUpload.addEventListener('click', () => {
+            imageInput.click();
+        });
+        
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                // Check if file is an image
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file');
+                    this.value = '';
+                    return;
+                }
+                
+                // Check file size (5MB max)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB');
+                    this.value = '';
+                    return;
+                }
+                
+                // Display file name
+                fileName.textContent = file.name;
+                
+                // Preview image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Allow drag and drop
+        imageUpload.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#2E8B57';
+            this.style.backgroundColor = '#f8f9fa';
+        });
+        
+        imageUpload.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#ddd';
+            this.style.backgroundColor = 'transparent';
+        });
+        
+        imageUpload.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#ddd';
+            this.style.backgroundColor = 'transparent';
+            
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                imageInput.files = e.dataTransfer.files;
+                
+                // Trigger change event manually
+                const event = new Event('change');
+                imageInput.dispatchEvent(event);
+            }
+        });
+        
+        // Add product form handling
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('description').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const imageFile = document.getElementById('image').files[0];
+            
+            // Get existing products
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            
+            // Create new product
+            const newProduct = {
+                id: Date.now().toString(),
+                title,
+                category,
+                description,
+                price,
+                sellerId: currentUser.id,
+                date: new Date().toISOString()
+            };
+            
+            // Handle image
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    newProduct.image = e.target.result; // Store as base64 string
+                    
+                    // Add to products array
+                    products.push(newProduct);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('products', JSON.stringify(products));
+                    
+                    // Redirect to my listings page
+                    alert('Product added successfully!');
+                    window.location.href = 'my-listings.html';
+                }
+                reader.readAsDataURL(imageFile);
+            } else {
+                // No image provided, use placeholder
+                newProduct.image = 'placeholder';
+                
+                // Add to products array
+                products.push(newProduct);
+                
+                // Save to localStorage
+                localStorage.setItem('products', JSON.stringify(products));
+                
+                // Redirect to my listings page
+                alert('Product added successfully!');
+                window.location.href = 'my-listings.html';
+            }
+        });
+    </script>
+</body>
+</html>

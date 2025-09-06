@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - EcoFinds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .orders-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .order-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+        }
+        
+        .order-id {
+            font-weight: bold;
+            color: #2E8B57;
+        }
+        
+        .order-date {
+            color: #6c757d;
+        }
+        
+        .order-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #2E8B57;
+        }
+        
+        .order-items {
+            margin-bottom: 1rem;
+        }
+        
+        .order-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .order-item-img {
+            width: 80px;
+            height: 80px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+        
+        .order-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .order-item-info {
+            flex: 1;
+        }
+        
+        .order-item-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .order-item-price {
+            color: #2E8B57;
+            font-weight: bold;
+        }
+        
+        .order-total {
+            text-align: right;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .empty-orders {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .empty-orders i {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>EcoFinds</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="my-listings.html">My Listings</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="my-orders.html">My Orders</a></li>
+                        <li><a href="dashboard.html">Profile</a></li>
+                        <li><a href="login.html" id="logoutBtn">Logout</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="orders-header">
+                <h1>My Orders</h1>
+            </div>
+            
+            <div id="ordersContainer">
+                <!-- Orders will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EcoFinds</h3>
+                    <p>Empowering Sustainable Consumption through a Second-Hand Marketplace</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="my-listings.html">My Listings</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="my-orders.html">My Orders</a></li>
+                        <li><a href="dashboard.html">Profile</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Email: info@ecofinds.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 EcoFinds. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+        
+        // Display orders
+        function displayOrders() {
+            const ordersContainer = document.getElementById('ordersContainer');
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            // Filter orders by current user
+            const userOrders = orders.filter(order => order.userId === currentUser.id);
+            
+            if (userOrders.length === 0) {
+                ordersContainer.innerHTML = `
+                    <div class="empty-orders">
+                        <i class="fas fa-box-open"></i>
+                        <h3>No orders yet</h3>
+                        <p>Your completed orders will appear here</p>
+                        <a href="index.html" class="btn" style="margin-top: 1rem;">Start Shopping</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort orders by date (newest first)
+            userOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            let html = '';
+            
+            userOrders.forEach(order => {
+                const orderDate = new Date(order.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const itemsHtml = order.items.map(item => {
+                    // Handle image display
+                    let imageHtml = '';
+                    if (item.image && item.image !== 'placeholder') {
+                        imageHtml = `<img src="${item.image}" alt="${item.title}">`;
+                    } else {
+                        imageHtml = `<i class="fas fa-image"></i>`;
+                    }
+                    
+                    return `
+                        <div class="order-item">
+                            <div class="order-item-img">
+                                ${imageHtml}
+                            </div>
+                            <div class="order-item-info">
+                                <h4 class="order-item-title">${item.title}</h4>
+                                <p class="order-item-price">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                                <p>Item Total: $${(item.price * item.quantity).toFixed(2)}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                html += `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <p class="order-id">Order #${order.id.substring(0, 8)}</p>
+                                <p class="order-date">Placed on ${orderDate}</p>
+                            </div>
+                            <span class="order-status status-completed">${order.status}</span>
+                        </div>
+                        <div class="order-items">
+                            ${itemsHtml}
+                        </div>
+                        <div class="order-total">
+                            Total: $${order.total.toFixed(2)}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            ordersContainer.innerHTML = html;
+        }
+        
+        // Load orders on page load
+        displayOrders();
+    </script>
+</body>
+</html>
+<li><a href="my-orders.html">My Orders</a></li>

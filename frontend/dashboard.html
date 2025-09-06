@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - EcoFinds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .profile-img-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #2E8B57;
+        }
+        
+        .profile-img-placeholder {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            border: 3px solid #2E8B57;
+            font-size: 3rem;
+        }
+        
+        .profile-img-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #2E8B57;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .profile-img-upload input {
+            display: none;
+        }
+        
+        .avatar-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        
+        .avatar-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .avatar-option:hover {
+            border-color: #2E8B57;
+            transform: scale(1.1);
+        }
+        
+        .avatar-option.selected {
+            border-color: #2E8B57;
+            border-width: 3px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>EcoFinds</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="my-listings.html">My Listings</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="my-orders.html">My Orders</a></li>
+                        <li><a href="dashboard.html">Profile</a></li>
+                        <li><a href="login.html" id="logoutBtn">Logout</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Your Profile</h1>
+            
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-img-container">
+                        <div id="profileImageContainer">
+                            <!-- Profile image will be loaded here -->
+                        </div>
+                        <label class="profile-img-upload" for="profileImageInput">
+                            <i class="fas fa-camera"></i>
+                            <input type="file" id="profileImageInput" accept="image/*">
+                        </label>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="profileUsername">Username</h2>
+                        <p id="profileEmail">user@example.com</p>
+                        <button class="btn btn-outline" id="changeAvatarBtn" style="margin-top: 0.5rem;">
+                            <i class="fas fa-user-circle"></i> Choose Avatar
+                        </button>
+                    </div>
+                </div>
+                
+                <form id="updateProfileForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" id="mobile" class="form-control" placeholder="Your mobile number">
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" class="form-control" rows="3" placeholder="Tell us about yourself"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" class="form-control" placeholder="Your location">
+                    </div>
+                    <button type="submit" class="btn btn-block">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Avatar Selection Modal -->
+    <div class="modal" id="avatarModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Choose an Avatar</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="avatar-options">
+                <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Max" class="avatar-option" data-avatar="avatar1">
+                <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Mittens" class="avatar-option" data-avatar="avatar2">
+                <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Bandit" class="avatar-option" data-avatar="avatar3">
+                <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Bear" class="avatar-option" data-avatar="avatar4">
+                <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Smokey" class="avatar-option" data-avatar="avatar5">
+                <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Charlie" class="avatar-option" data-avatar="avatar6">
+                <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Lucy" class="avatar-option" data-avatar="avatar7">
+                <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Shadow" class="avatar-option" data-avatar="avatar8">
+            </div>
+            <button class="btn btn-block" id="saveAvatarBtn" style="margin-top: 1.5rem;">Save Avatar</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EcoFinds</h3>
+                    <p>Empowering Sustainable Consumption through a Second-Hand Marketplace</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="my-listings.html">My Listings</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="my-orders.html">My Orders</a></li>
+                        <li><a href="dashboard.html">Profile</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Email: info@ecofinds.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 EcoFinds. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        } else {
+            // Load profile data
+            document.getElementById('username').value = currentUser.username || '';
+            document.getElementById('email').value = currentUser.email || '';
+            document.getElementById('mobile').value = currentUser.mobile || '';
+            document.getElementById('bio').value = currentUser.bio || '';
+            document.getElementById('location').value = currentUser.location || '';
+            
+            document.getElementById('profileUsername').textContent = currentUser.username;
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            
+            // Load profile image
+            loadProfileImage();
+        }
+        
+        // Load profile image
+        function loadProfileImage() {
+            const container = document.getElementById('profileImageContainer');
+            if (currentUser.avatar) {
+                container.innerHTML = `<img src="${currentUser.avatar}" class="profile-img" alt="Profile Image">`;
+            } else if (currentUser.profileImage && currentUser.profileImage !== 'placeholder') {
+                container.innerHTML = `<img src="${currentUser.profileImage}" class="profile-img" alt="Profile Image">`;
+            } else {
+                container.innerHTML = `
+                    <div class="profile-img-placeholder">
+                        <i class="fas fa-user"></i>
+                    </div>
+                `;
+            }
+        }
+        
+        // Update profile form handling
+        document.getElementById('updateProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobile').value;
+            const bio = document.getElementById('bio').value;
+            const location = document.getElementById('location').value;
+            
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Find current user index
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex !== -1) {
+                // Update user data
+                users[userIndex].username = username;
+                users[userIndex].email = email;
+                users[userIndex].mobile = mobile;
+                users[userIndex].bio = bio;
+                users[userIndex].location = location;
+                
+                // Save to localStorage
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(users[userIndex]));
+                
+                // Update profile display
+                document.getElementById('profileUsername').textContent = username;
+                document.getElementById('profileEmail').textContent = email;
+                
+                alert('Profile updated successfully!');
+            }
+        });
+        
+        // Profile image upload
+        document.getElementById('profileImageInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                // Check if file is an image
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file');
+                    this.value = '';
+                    return;
+                }
+                
+                // Check file size (2MB max)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('File size must be less than 2MB');
+                    this.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Update current user
+                    currentUser.profileImage = e.target.result;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    // Update users array
+                    const users = JSON.parse(localStorage.getItem('users')) || [];
+                    const userIndex = users.findIndex(u => u.id === currentUser.id);
+                    if (userIndex !== -1) {
+                        users[userIndex].profileImage = e.target.result;
+                        localStorage.setItem('users', JSON.stringify(users));
+                    }
+                    
+                    // Remove avatar if exists
+                    if (currentUser.avatar) {
+                        delete currentUser.avatar;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        
+                        const users = JSON.parse(localStorage.getItem('users')) || [];
+                        const userIndex = users.findIndex(u => u.id === currentUser.id);
+                        if (userIndex !== -1) {
+                            delete users[userIndex].avatar;
+                            localStorage.setItem('users', JSON.stringify(users));
+                        }
+                    }
+                    
+                    // Update profile image display
+                    loadProfileImage();
+                    alert('Profile image updated successfully!');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Avatar modal functionality
+        const avatarModal = document.getElementById('avatarModal');
+        const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const saveAvatarBtn = document.getElementById('saveAvatarBtn');
+        let selectedAvatar = null;
+        
+        changeAvatarBtn.addEventListener('click', function() {
+            avatarModal.style.display = 'flex';
+        });
+        
+        closeModalBtn.addEventListener('click', function() {
+            avatarModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === avatarModal) {
+                avatarModal.style.display = 'none';
+            }
+        });
+        
+        // Avatar selection
+        document.querySelectorAll('.avatar-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.avatar-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                selectedAvatar = this.getAttribute('data-avatar');
+            });
+        });
+        
+        // Save avatar
+        saveAvatarBtn.addEventListener('click', function() {
+            if (!selectedAvatar) {
+                alert('Please select an avatar');
+                return;
+            }
+            
+            // Get avatar URL based on selection
+            const avatarUrl = `https://api.dicebear.com/6.x/adventurer/svg?seed=${selectedAvatar.replace('avatar', '')}`;
+            
+            // Update current user
+            currentUser.avatar = avatarUrl;
+            if (currentUser.profileImage) {
+                delete currentUser.profileImage;
+            }
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Update users array
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex].avatar = avatarUrl;
+                if (users[userIndex].profileImage) {
+                    delete users[userIndex].profileImage;
+                }
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            // Update profile image display
+            loadProfileImage();
+            
+            // Close modal
+            avatarModal.style.display = 'none';
+            selectedAvatar = null;
+            
+            alert('Avatar updated successfully!');
+        });
+    </script>
+</body>
+</html>
+<li><a href="my-orders.html">My Orders</a></li>

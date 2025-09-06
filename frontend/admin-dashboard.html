@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - EcoFinds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #2E8B57;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+        }
+        
+        .admin-section {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .admin-section h2 {
+            margin-bottom: 1.5rem;
+            color: #2E8B57;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .user-list, .product-list, .order-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .user-item, .product-item, .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .user-item:last-child, .product-item:last-child, .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .user-info, .product-info, .order-info {
+            flex: 1;
+        }
+        
+        .user-actions, .product-actions, .order-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .admin-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .btn-edit {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-view {
+            background: #2E8B57;
+            color: white;
+        }
+        
+        .admin-only {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>EcoFinds</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="my-listings.html">My Listings</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="my-orders.html">My Orders</a></li>
+                        <li><a href="dashboard.html">Profile</a></li>
+                        <li class="admin-only"><a href="admin-dashboard.html">Admin</a></li>
+                        <li><a href="login.html" id="logoutBtn">Logout</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Admin Dashboard</h1>
+            
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" id="totalUsers">0</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-number" id="totalProducts">0</div>
+                    <div class="stat-label">Total Products</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-number" id="totalOrders">0</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-number" id="totalRevenue">$0.00</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+            </div>
+            
+            <div class="admin-section">
+                <h2>User Management</h2>
+                <div class="user-list" id="usersList">
+                    <!-- Users will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="admin-section">
+                <h2>Product Management</h2>
+                <div class="product-list" id="productsList">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="admin-section">
+                <h2>Order Management</h2>
+                <div class="order-list" id="ordersList">
+                    <!-- Orders will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EcoFinds</h3>
+                    <p>Empowering Sustainable Consumption through a Second-Hand Marketplace</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="my-listings.html">My Listings</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="my-orders.html">My Orders</a></li>
+                        <li><a href="dashboard.html">Profile</a></li>
+                        <li class="admin-only"><a href="admin-dashboard.html">Admin</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Email: info@ecofinds.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 EcoFinds. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in and is admin
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        } else if (currentUser.email !== 'admin@ecofinds.com') {
+            // Redirect non-admin users
+            alert('You do not have permission to access the admin dashboard.');
+            window.location.href = 'index.html';
+        } else {
+            // Show admin menu items
+            document.querySelectorAll('.admin-only').forEach(item => {
+                item.style.display = 'block';
+            });
+            
+            // Load admin dashboard data
+            loadAdminData();
+        }
+        
+        // Load admin dashboard data
+        function loadAdminData() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            // Update stats
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('totalProducts').textContent = products.length;
+            document.getElementById('totalOrders').textContent = orders.length;
+            
+            // Calculate total revenue
+            const totalRevenue = orders.reduce((total, order) => total + order.total, 0);
+            document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+            
+            // Load users list
+            const usersList = document.getElementById('usersList');
+            if (users.length === 0) {
+                usersList.innerHTML = '<p class="text-center">No users found.</p>';
+            } else {
+                usersList.innerHTML = users.map(user => `
+                    <div class="user-item">
+                        <div class="user-info">
+                            <h4>${user.username}</h4>
+                            <p>${user.email}</p>
+                        </div>
+                        <div class="user-actions">
+                            <button class="admin-btn btn-view">View</button>
+                            <button class="admin-btn btn-edit">Edit</button>
+                            <button class="admin-btn btn-delete">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Load products list
+            const productsList = document.getElementById('productsList');
+            if (products.length === 0) {
+                productsList.innerHTML = '<p class="text-center">No products found.</p>';
+            } else {
+                productsList.innerHTML = products.map(product => `
+                    <div class="product-item">
+                        <div class="product-info">
+                            <h4>${product.title}</h4>
+                            <p>$${product.price.toFixed(2)} | ${product.category}</p>
+                        </div>
+                        <div class="product-actions">
+                            <button class="admin-btn btn-view">View</button>
+                            <button class="admin-btn btn-edit">Edit</button>
+                            <button class="admin-btn btn-delete">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Load orders list
+            const ordersList = document.getElementById('ordersList');
+            if (orders.length === 0) {
+                ordersList.innerHTML = '<p class="text-center">No orders found.</p>';
+            } else {
+                ordersList.innerHTML = orders.map(order => `
+                    <div class="order-item">
+                        <div class="order-info">
+                            <h4>Order #${order.id.substring(0, 8)}</h4>
+                            <p>$${order.total.toFixed(2)} | ${new Date(order.date).toLocaleDateString()}</p>
+                        </div>
+                        <div class="order-actions">
+                            <button class="admin-btn btn-view">View</button>
+                            <button class="admin-btn btn-edit">Edit</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+    </script>
+</body>
+</html>
+<li><a href="my-orders.html">My Orders</a></li>

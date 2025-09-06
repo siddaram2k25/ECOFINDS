@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Viewer - EcoFinds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background-color: #2E8B57;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            background-color: #2E8B57;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .data-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .data-section h2 {
+            color: #2E8B57;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .data-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .empty-data {
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .record-count {
+            background: #e9ecef;
+            color: #495057;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-database"></i> EcoFinds Data Viewer</h1>
+            <p>View all data stored in your browser's localStorage</p>
+        </header>
+        
+        <div class="actions">
+            <button class="btn" onclick="refreshData()">
+                <i class="fas fa-sync-alt"></i> Refresh Data
+            </button>
+            <button class="btn btn-warning" onclick="clearCurrentUser()">
+                <i class="fas fa-user-times"></i> Clear Current User
+            </button>
+            <button class="btn btn-warning" onclick="clearCart()">
+                <i class="fas fa-trash"></i> Clear Cart
+            </button>
+            <button class="btn btn-danger" onclick="clearAllData()">
+                <i class="fas fa-broom"></i> Clear All Data
+            </button>
+        </div>
+        
+        <div class="data-section">
+            <h2>
+                Users Data
+                <span class="record-count" id="users-count">0 users</span>
+            </h2>
+            <div class="data-content">
+                <pre id="users-data" class="empty-data">No user data found. Register accounts to see data here.</pre>
+            </div>
+        </div>
+        
+        <div class="data-section">
+            <h2>
+                Current User
+                <span class="record-count" id="current-user-status">Not logged in</span>
+            </h2>
+            <div class="data-content">
+                <pre id="current-user" class="empty-data">No user is currently logged in.</pre>
+            </div>
+        </div>
+        
+        <div class="data-section">
+            <h2>
+                Products Data
+                <span class="record-count" id="products-count">0 products</span>
+            </h2>
+            <div class="data-content">
+                <pre id="products-data" class="empty-data">No products found. Add products to see data here.</pre>
+            </div>
+        </div>
+        
+        <div class="data-section">
+            <h2>
+                Cart Data
+                <span class="record-count" id="cart-count">0 items</span>
+            </h2>
+            <div class="data-content">
+                <pre id="cart-data" class="empty-data">Cart is empty. Add products to cart to see data here.</pre>
+            </div>
+        </div>
+        
+        <div class="data-section">
+            <h2>
+                Orders Data
+                <span class="record-count" id="orders-count">0 orders</span>
+            </h2>
+            <div class="data-content">
+                <pre id="orders-data" class="empty-data">No orders found. Complete My orders to see data here.</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Display all localStorage data
+        function refreshData() {
+            // Users data
+            const usersData = localStorage.getItem('users');
+            if (usersData) {
+                const users = JSON.parse(usersData);
+                document.getElementById('users-data').textContent = JSON.stringify(users, null, 2);
+                document.getElementById('users-data').classList.remove('empty-data');
+                document.getElementById('users-count').textContent = `${users.length} users`;
+            } else {
+                document.getElementById('users-data').textContent = 'No user data found. Register accounts to see data here.';
+                document.getElementById('users-data').classList.add('empty-data');
+                document.getElementById('users-count').textContent = '0 users';
+            }
+            
+            // Current user
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                document.getElementById('current-user').textContent = JSON.stringify(JSON.parse(currentUser), null, 2);
+                document.getElementById('current-user').classList.remove('empty-data');
+                document.getElementById('current-user-status').textContent = 'Logged in';
+            } else {
+                document.getElementById('current-user').textContent = 'No user is currently logged in.';
+                document.getElementById('current-user').classList.add('empty-data');
+                document.getElementById('current-user-status').textContent = 'Not logged in';
+            }
+            
+            // Products data
+            const productsData = localStorage.getItem('products');
+            if (productsData) {
+                const products = JSON.parse(productsData);
+                document.getElementById('products-data').textContent = JSON.stringify(products, null, 2);
+                document.getElementById('products-data').classList.remove('empty-data');
+                document.getElementById('products-count').textContent = `${products.length} products`;
+            } else {
+                document.getElementById('products-data').textContent = 'No products found. Add products to see data here.';
+                document.getElementById('products-data').classList.add('empty-data');
+                document.getElementById('products-count').textContent = '0 products';
+            }
+            
+            // Cart data
+            const cartData = localStorage.getItem('cart');
+            if (cartData) {
+                const cart = JSON.parse(cartData);
+                document.getElementById('cart-data').textContent = JSON.stringify(cart, null, 2);
+                document.getElementById('cart-data').classList.remove('empty-data');
+                document.getElementById('cart-count').textContent = `${cart.length} items`;
+            } else {
+                document.getElementById('cart-data').textContent = 'Cart is empty. Add products to cart to see data here.';
+                document.getElementById('cart-data').classList.add('empty-data');
+                document.getElementById('cart-count').textContent = '0 items';
+            }
+            
+            // Orders data
+            const ordersData = localStorage.getItem('orders');
+            if (ordersData) {
+                const orders = JSON.parse(ordersData);
+                document.getElementById('orders-data').textContent = JSON.stringify(orders, null, 2);
+                document.getElementById('orders-data').classList.remove('empty-data');
+                document.getElementById('orders-count').textContent = `${orders.length} orders`;
+            } else {
+                document.getElementById('orders-data').textContent = 'No orders found. Complete My orders to see data here.';
+                document.getElementById('orders-data').classList.add('empty-data');
+                document.getElementById('orders-count').textContent = '0 orders';
+            }
+        }
+        
+        // Clear all EcoFinds data
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear ALL EcoFinds data? This cannot be undone.')) {
+                localStorage.removeItem('users');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('products');
+                localStorage.removeItem('cart');
+                localStorage.removeItem('orders');
+                refreshData();
+                alert('All data cleared! You will need to register a new account.');
+            }
+        }
+        
+        // Clear current user data (logout)
+        function clearCurrentUser() {
+            if (confirm('Are you sure you want to logout and clear current user data?')) {
+                localStorage.removeItem('currentUser');
+                refreshData();
+                alert('Current user data cleared!');
+            }
+        }
+        
+        // Clear cart data
+        function clearCart() {
+            if (confirm('Are you sure you want to clear your cart?')) {
+                localStorage.removeItem('cart');
+                refreshData();
+                alert('Cart cleared!');
+            }
+        }
+        
+        // Load data on page load
+        refreshData();
+    </script>
+</body>
+</html>
+<li><a href="my-orders.html">My Orders</a></li>
