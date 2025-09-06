@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFinds - Sustainable Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        :root {
+            --primary: #059669;
+            --primary-dark: #047857;
+            --secondary: #FBBF24;
+            --light: #F9FAFB;
+            --dark: #1F2937;
+            --gray: #6B7280;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: #f8fafc;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            background-color: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--light);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .feature-icon {
+            background-color: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        /* Products Section */
+        .products {
+            padding: 4rem 0;
+            background-color: var(--light);
+        }
+        
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .search-box input {
+            border: none;
+            outline: none;
+            padding: 0.5rem;
+            width: 200px;
+        }
+        
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid #ddd;
+            background: white;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .product-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-price {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .product-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            padding: 4rem 0;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .dashboard-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            font-family: inherit;
+        }
+        
+        .form-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-column a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #4b5563;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .products-header, .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-filter {
+                width: 100%;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+        }
+        
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-1 {
+            margin-top: 1rem;
+        }
+        
+        .mt-2 {
+            margin-top: 2rem;
+        }
+        
+        .mb-1 {
+            margin-bottom: 1rem;
+        }
+        
+        .mb-2 {
+            margin-bottom: 2rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--hover-shadow);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast-error {
+            background-color: #EF4444;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <div class="logo-icon">♻</div>
+                    EcoFinds
+                </a>
+                
+                <nav>
+                    <a href="#features">Features</a>
+                    <a href="#products">Products</a>
+                    <a href="#about">About</a>
+                    <a href="#impact">Our Impact</a>
+                </nav>
+                
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">Login</button>
+                    <button class="btn btn-primary" id="registerBtn">Register</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Discover Sustainable Second-Hand Products</h1>
+                <p>EcoFinds is your eco-friendly marketplace. Buy, sell, and discover pre-loved items while reducing waste and supporting circular consumption.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Browse Products</button>
+                    <button class="btn btn-outline">Become a Seller</button>
+                    <button class="btn btn-secondary">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose EcoFinds?</h2>
+                <p>Our platform offers everything you need for sustainable shopping and selling</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i>👤</i>
+                    </div>
+                    <h3>User Authentication</h3>
+                    <p>Create an account, log in securely, and set up your EcoFinds profile with eco-preferences.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i>📦</i>
+                    </div>
+                    <h3>Product Listings</h3>
+                    <p>Add eco-friendly products with title, description, category, price, and multiple images.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i>🛒</i>
+                    </div>
+                    <h3>Cart & Purchases</h3>
+                    <p>Add products to your cart, checkout securely, and view your previous purchases anytime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="products-header">
+                <div class="section-title">
+                    <h2>Featured Products</h2>
+                    <p>Discover our curated selection of eco-friendly products</p>
+                </div>
+                
+                <div class="search-filter">
+                    <div class="search-box">
+                        <i>🔍</i>
+                        <input type="text" placeholder="Search products...">
+                    </div>
+                    <select class="filter-select">
+                        <option value="">All Categories</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="home">Home & Living</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="books">Books & Media</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="products-grid" id="productsContainer">
+                <!-- Products will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="features" id="impact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Environmental Impact</h2>
+                <p>Join us in making a difference for our planet</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Reduce Waste</h3>
+                    <p>By buying and selling second-hand, we're keeping items out of landfills and reducing waste.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💧</div>
+                    <h3>Save Resources</h3>
+                    <p>Second-hand shopping saves water, energy, and raw materials needed to produce new items.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌎</div>
+                    <h3>Lower Carbon Footprint</h3>
+                    <p>Extending product lifecycles reduces greenhouse gas emissions from manufacturing and transportation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section (hidden until logged in) -->
+    <section class="dashboard" id="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <div class="section-title">
+                    <h2>Your Dashboard</h2>
+                    <p>Manage your account, listings, and purchases</p>
+                </div>
+                
+                <button class="btn btn-primary" id="addProductBtn">+ Add Product</button>
+            </div>
+            
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Products Listed</div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Items Sold</div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Carbon Saved (kg)</div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card">
+                <h3>Your Listings</h3>
+                <div id="userListings">
+                    <!-- User's product listings will be loaded here -->
+                    <p class="text-center mt-2">You haven't listed any products yet.</p>
+                </div>
+            </div>
+            
+            <div class="dashboard-card mt-2">
+                <h3>Purchase History</h3>
+                <div id="purchaseHistory">
+                    <!-- Purchase history will be loaded here -->
+                    <p class="text-center mt-2">You haven't made any purchases yet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="features" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About EcoFinds</h2>
+                <p>Our mission is to make sustainable shopping accessible to everyone</p>
+            </div>
+            
+            <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <p>EcoFinds was born from a passion for sustainability and a desire to make eco-friendly shopping accessible to everyone. We believe that small changes in our purchasing habits can make a big impact on our planet.</p>
+                <p style="margin-top: 1.5rem;">Our platform connects conscious consumers with sustainable brands and products that are good for people and the planet. By promoting second-hand shopping, we're helping to create a circular economy that reduces waste and conserves resources.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>EcoFinds</h3>
+                    <p>Your eco-friendly marketplace for sustainable second-hand products.</p>
+                    <div class="social-links">
+                        <a href="#">📱</a>
+                        <a href="#">📷</a>
+                        <a href="#">🐦</a>
+                        <a href="#">📌</a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#">Clothing</a></li>
+                        <li><a href="#">Home & Living</a></li>
+                        <li><a href="#">Electronics</a></li>
+                        <li><a href="#">Books & Media</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>123 Green Street</li>
+                        <li>Eco City, 560001</li>
+                        <li>contact@ecofinds.com</li>
+                        <li>+91 98765 43210</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 EcoFinds. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to EcoFinds</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#" id="switchToRegister">Register</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create an Account</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" class="form-control" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+                
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" id="switchToLogin">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="addProductModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add a New Product</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <form id="addProductForm">
+                <div class="form-group">
+                    <label for="productTitle">Product Title</label>
+                    <input type="text" id="productTitle" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" class="form-control" rows="3" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productCategory">Category</label>
+                    <select id="productCategory" class="form-control" required>
+                        <option value="">Select a category</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Home & Living">Home & Living</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Books & Media">Books & Media</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productPrice">Price (₹)</label>
+                    <input type="number" id="productPrice" class="form-control" min="0" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productImage">Image URL</label>
+                    <input type="url" id="productImage" class="form-control" placeholder="https://example.com/image.jpg">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Add Product</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        // Initialize data structures
+        let users = JSON.parse(localStorage.getItem('ecofinds_users')) || [];
+        let products = JSON.parse(localStorage.getItem('ecofinds_products')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('ecofinds_currentUser')) || null;
+        let cart = JSON.parse(localStorage.getItem('ecofinds_cart')) || [];
+        
+        // Sample products if none exist
+        if (products.length === 0) {
+            products = [
+                {
+                    id: 1,
+                    title: 'Organic Cotton T-Shirt',
+                    description: 'Gently used organic cotton t-shirt in excellent condition. Perfect for everyday wear.',
+                    category: 'Clothing',
+                    price: 499,
+                    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    userId: null
+                },
+                {
+                    id: 2,
+                    title: 'Bamboo Cutting Board',
+                    description: 'Eco-friendly bamboo cutting board. Lightly used and well-maintained.',
+                    category: 'Home & Living',
+                    price: 299,
+                    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    userId: null
+                },
+                {
+                    id: 3,
+                    title: 'Refurbished Smartphone',
+                    description: 'Fully refurbished smartphone with new battery. Includes charger and case.',
+                    category: 'Electronics',
+                    price: 8499,
+                    image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    userId: null
+                },
+                {
+                    id: 4,
+                    title: 'Vintage Denim Jacket',
+                    description: 'Classic vintage denim jacket from the 90s. Unique and sustainable fashion.',
+                    category: 'Clothing',
+                    price: 1299,
+                    image: 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    userId: null
+                },
+                {
+                    id: 5,
+                    title: 'Wooden Bookshelf',
+                    description: 'Solid wooden bookshelf made from reclaimed wood. Some minor wear but structurally sound.',
+                    category: 'Home & Living',
+                    price: 2499,
+                    image: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    userId: null
+                },
+                {
+                    id: 6,
+                    title: 'Sustainable Living Books',
+                    description: 'Collection of books on sustainable living and zero waste practices.',
+                    category: 'Books & Media',
+                    price: 899,
+                    image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    userId: null
+                }
+            ];
+            localStorage.setItem('ecofinds_products', JSON.stringify(products));
+        }
+        
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const addProductModal = document.getElementById('addProductModal');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        const switchToRegister = document.getElementById('switchToRegister');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const addProductForm = document.getElementById('addProductForm');
+        const productsContainer = document.getElementById('productsContainer');
+        const dashboardSection = document.getElementById('dashboard');
+        const userListings = document.getElementById('userListings');
+        const purchaseHistory = document.getElementById('purchaseHistory');
+        const authButtons = document.querySelector('.auth-buttons');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        
+        // Event Listeners
+        loginBtn.addEventListener('click', () => loginModal.style.display = 'flex');
+        registerBtn.addEventListener('click', () => registerModal.style.display = 'flex');
+        addProductBtn.addEventListener('click', () => {
+            if (!currentUser) {
+                showToast('Please log in to add a product', true);
+                loginModal.style.display = 'flex';
+                return;
+            }
+            addProductModal.style.display = 'flex';
+        });
+        
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                loginModal.style.display = 'none';
+                registerModal.style.display = 'none';
+                addProductModal.style.display = 'none';
+            });
+        });
+        
+        switchToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.style.display = 'none';
+            registerModal.style.display = 'flex';
+        });
+        
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerModal.style.display = 'none';
+            loginModal.style.display = 'flex';
+        });
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('ecofinds_currentUser', JSON.stringify(currentUser));
+                updateUI();
+                loginModal.style.display = 'none';
+                showToast('Login successful!');
+            } else {
+                showToast('Invalid email or password', true);
+            }
+        });
+        
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showToast('Passwords do not match!', true);
+                return;
+            }
+            
+            if (users.some(u => u.email === email)) {
+                showToast('Email already registered!', true);
+                return;
+            }
+            
+            const newUser = {
+                id: Date.now(),
+                name,
+                email,
+                password,
+                listings: [],
+                purchases: []
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('ecofinds_users', JSON.stringify(users));
+            
+            currentUser = newUser;
+            localStorage.setItem('ecofinds_currentUser', JSON.stringify(currentUser));
+            
+            updateUI();
+            registerModal.style.display = 'none';
+            showToast('Registration successful!');
+        });
+        
+        addProductForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                showToast('Please log in to add a product', true);
+                return;
+            }
+            
+            const title = document.getElementById('productTitle').value;
+            const description = document.getElementById('productDescription').value;
+            const category = document.getElementById('productCategory').value;
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const image = document.getElementById('productImage').value || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80';
+            
+            const newProduct = {
+                id: Date.now(),
+                title,
+                description,
+                category,
+                price,
+                image,
+                userId: currentUser.id
+            };
+            
+            products.push(newProduct);
+            localStorage.setItem('ecofinds_products', JSON.stringify(products));
+            
+            currentUser.listings.push(newProduct.id);
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            users[userIndex] = currentUser;
+            localStorage.setItem('ecofinds_users', JSON.stringify(users));
+            localStorage.setItem('ecofinds_currentUser', JSON.stringify(currentUser));
+            
+            updateUI();
+            addProductModal.style.display = 'none';
+            showToast('Product added successfully!');
+            
+            // Reset form
+            addProductForm.reset();
+        });
+        
+        // Functions
+        function updateUI() {
+            if (currentUser) {
+                authButtons.innerHTML = `
+                    <button class="btn btn-outline" id="addProductBtn">Add Product</button>
+                    <button class="btn btn-primary" id="logoutBtn">Logout</button>
+                `;
+                
+                document.getElementById('addProductBtn').addEventListener('click', () => {
+                    addProductModal.style.display = 'flex';
+                });
+                
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    currentUser = null;
+                    localStorage.removeItem('ecofinds_currentUser');
+                    updateUI();
+                    showToast('Logged out successfully!');
+                });
+                
+                dashboardSection.style.display = 'block';
+                loadUserListings();
+                loadPurchaseHistory();
+                updateStats();
+            } else {
+                authButtons.innerHTML = `
+                    <button class="btn btn-outline" id="loginBtn">Login</button>
+                    <button class="btn btn-primary" id="registerBtn">Register</button>
+                `;
+                
+                document.getElementById('loginBtn').addEventListener('click', () => loginModal.style.display = 'flex');
+                document.getElementById('registerBtn').addEventListener('click', () => registerModal.style.display = 'flex');
+                
+                dashboardSection.style.display = 'none';
+            }
+            
+            loadProducts();
+        }
+        
+        function loadProducts() {
+            productsContainer.innerHTML = '';
+            
+            if (products.length === 0) {
+                productsContainer.innerHTML = '<p class="text-center">No products available yet.</p>';
+                return;
+            }
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.title}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.title}</h3>
+                        <p class="product-price">₹${product.price.toLocaleString('en-IN')}</p>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-actions">
+                            <button class="btn btn-outline" style="flex: 1;">Details</button>
+                            <button class="btn btn-primary" style="flex: 1;" data-id="${product.id}">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+                
+                productsContainer.appendChild(productCard);
+            });
+            
+            // Add event listeners to Add to Cart buttons
+            document.querySelectorAll('.product-card button.btn-primary').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    if (!currentUser) {
+                        showToast('Please log in to add items to your cart', true);
+                        loginModal.style.display = 'flex';
+                        return;
+                    }
+                    
+                    const productId = parseInt(e.target.getAttribute('data-id'));
+                    const product = products.find(p => p.id === productId);
+                    
+                    if (product) {
+                        const existingItem = cart.find(item => item.productId === productId);
+                        
+                        if (existingItem) {
+                            existingItem.quantity += 1;
+                        } else {
+                            cart.push({
+                                productId: product.id,
+                                title: product.title,
+                                price: product.price,
+                                image: product.image,
+                                quantity: 1
+                            });
+                        }
+                        
+                        localStorage.setItem('ecofinds_cart', JSON.stringify(cart));
+                        showToast('Product added to cart!');
+                    }
+                });
+            });
+        }
+        
+        function loadUserListings() {
+            if (!currentUser) return;
+            
+            userListings.innerHTML = '';
+            
+            const userProducts = products.filter(p => p.userId === currentUser.id);
+            
+            if (userProducts.length === 0) {
+                userListings.innerHTML = '<p class="text-center">You haven\'t listed any products yet.</p>';
+                return;
+            }
+            
+            userProducts.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.className = 'product-card';
+                productElement.innerHTML = `
+                    <img src="${product.image}" alt="${product.title}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.title}</h3>
+                        <p class="product-price">₹${product.price.toLocaleString('en-IN')}</p>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-actions">
+                            <button class="btn btn-outline" style="flex: 1;">Edit</button>
+                            <button class="btn btn-primary" style="flex: 1;">View Stats</button>
+                        </div>
+                    </div>
+                `;
+                
+                userListings.appendChild(productElement);
+            });
+        }
+        
+        function loadPurchaseHistory() {
+            if (!currentUser) return;
+            
+            purchaseHistory.innerHTML = '';
+            
+            if (currentUser.purchases.length === 0) {
+                purchaseHistory.innerHTML = '<p class="text-center">You haven\'t made any purchases yet.</p>';
+                return;
+            }
+            
+            currentUser.purchases.forEach(purchase => {
+                const purchaseElement = document.createElement('div');
+                purchaseElement.className = 'product-card';
+                purchaseElement.innerHTML = `
+                    <div class="product-info">
+                        <h3 class="product-title">Order #${purchase.id}</h3>
+                        <p class="product-price">₹${purchase.total.toLocaleString('en-IN')}</p>
+                        <p class="product-description">Date: ${new Date(purchase.date).toLocaleDateString()}</p>
+                        <div class="product-actions">
+                            <button class="btn btn-outline" style="flex: 1;">View Details</button>
+                            <button class="btn btn-primary" style="flex: 1;">Buy Again</button>
+                        </div>
+                    </div>
+                `;
+                
+                purchaseHistory.appendChild(purchaseElement);
+            });
+        }
+        
+        function updateStats() {
+            if (!currentUser) return;
+            
+            const userProducts = products.filter(p => p.userId === currentUser.id);
+            const stats = document.querySelectorAll('.stat-number');
+            
+            if (stats.length >= 3) {
+                stats[0].textContent = userProducts.length;
+                stats[1].textContent = userProducts.filter(p => p.sold).length || 0;
+                
+                // Calculate carbon saved (example calculation)
+                const carbonSaved = userProducts.length * 5.5;
+                stats[2].textContent = carbonSaved.toFixed(1);
+            }
+        }
+        
+        function showToast(message, isError = false) {
+            toastMessage.textContent = message;
+            
+            if (isError) {
+                toast.classList.add('toast-error');
+            } else {
+                toast.classList.remove('toast-error');
+            }
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) loginModal.style.display = 'none';
+            if (e.target === registerModal) registerModal.style.display = 'none';
+            if (e.target === addProductModal) addProductModal.style.display = 'none';
+        });
+        
+        // Initialize the page
+        updateUI();
+    </script>
+</body>
+</html>
